@@ -2,8 +2,11 @@
 
 ---
 ## CRUD
+<img src="https://github.com/user-attachments/assets/e0efbcf8-4eec-43be-a44f-31895365824f" width="400"/>
 
 ## ERD
+![image](https://github.com/user-attachments/assets/a494b84d-cda7-4bb1-bdd4-c0079ffda5e3)
+
 
 ##  API 명세서
 
