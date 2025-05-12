@@ -10,15 +10,20 @@
 
 ##  API 명세서
 
-| 기능             | Method | URL                                          | Request 형식 | Response 형식 | 상태코드 |
-|------------------|--------|----------------------------------------------|---------------|----------------|----------|
-| 일정 생성         | POST   | `/api/planner`                               | JSON          | JSON           | 201      |
-| 일정 전체 조회     | GET    | `/api/planner`                               | -             | JSON           | 200      |
-| 일정 단건 조회     | GET    | `/api/planner/{id}`                          | Path Variable | JSON           | 200      |
-| 일정 조회(작성자)  | GET    | `/api/planner/request-param?name={name}`     | Query Param   | JSON           | 200      |
-| 일정 조회(수정일)  | GET    | `/api/planner/request-param?updateAt={date}` | Query Param   | JSON           | 200      |
-| 일정 수정         | PUT    | `/api/planner/{id}`                          | JSON          | JSON           | 200      |
-| 일정 삭제         | DELETE | `/api/planner/{id}?password=1234`            | Query Param   | -              | 204      |
+| 기능             | Method | URL                                          | Request 형식    | Response 형식 | 상태코드 |
+|----------------|--------|----------------------------------------------|---------------|-------------|------|
+| 일정 생성          | POST   | `/api/planner`                               | JSON          | JSON        | 201  |
+| 일정 전체 조회       | GET    | `/api/planner`                               | -             | JSON        | 200  |
+| 일정 단건 조회       | GET    | `/api/planner/{id}`                          | Path Variable | JSON        | 200  |
+| 일정 조회(작성자고유번호) | GET    | `/api/planner/request-param?userId={userId}` | Query Param   | JSON        | 200  |
+| 일정 조회(수정일)     | GET    | `/api/planner/request-param?updateAt={date}` | Query Param   | JSON        | 200  |
+| 일정 수정          | PUT    | `/api/planner/{id}`                          | JSON          | JSON        | 200  |
+| 일정 삭제          | DELETE | `/api/planner/{id}?password=1234`            | Query Param   | -           | 204  |
+| 유저 생성          | POST   | `/api/user`                                  | JSON          | JSON        | 201  |
+| 유저 단건 조회       | GET    | `/api/user/{id}`                             | Path Variable | JSON        | 200  |
+| 유저 전체 조회       | GET    | `/api/user`                                  | -             | JSON        | 200  |
+| 유저 수정          | PUT    | `/api/user/{id}`                             | JSON          | JSON        | 200  |
+| 유저 삭제          | DELETE | `/api/user/{id}?password=1234`               | Query Param   | -           | 204  |
 
 ---
 
