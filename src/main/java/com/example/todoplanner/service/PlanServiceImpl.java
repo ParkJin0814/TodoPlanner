@@ -6,6 +6,8 @@ import com.example.todoplanner.entity.Plan;
 import com.example.todoplanner.repository.PlanRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class PlanServiceImpl implements PlanService{
     private final PlanRepository planRepository;
@@ -20,5 +22,10 @@ public class PlanServiceImpl implements PlanService{
         Plan plan = new Plan(dto.getUserId(), dto.getTitle(), dto.getContent());
 
         return planRepository.savePlan(plan);
+    }
+
+    @Override
+    public List<PlanResponseDto> findAllPlans() {
+        return planRepository.findAllPlans();
     }
 }

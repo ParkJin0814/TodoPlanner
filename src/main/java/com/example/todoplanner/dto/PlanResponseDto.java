@@ -1,5 +1,6 @@
 package com.example.todoplanner.dto;
 
+import com.example.todoplanner.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -3,6 +3,10 @@ package com.example.todoplanner.service;
 import com.example.todoplanner.dto.PlanRequestDto;
 import com.example.todoplanner.dto.PlanResponseDto;
 
+import java.util.List;
+
 public interface PlanService {
     PlanResponseDto savePlan(PlanRequestDto dto);
+
+    List<PlanResponseDto> findAllPlans();
 }
