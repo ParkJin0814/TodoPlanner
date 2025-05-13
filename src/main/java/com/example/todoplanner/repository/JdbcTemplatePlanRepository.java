@@ -52,21 +52,25 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     // jdbc 테이블 조회 및 PlanResponseDto 정보담기
     @Override
     public List<PlanResponseDto> findAllPlans() {
-        return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  from plan p inner join users u on p.userId=u.id", planRowMapper());
+        return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name " +
+                "from plan p inner join users u on p.userId=u.id " +
+                "order by p.updateAt desc", planRowMapper());
     }
 
     @Override
     public List<PlanResponseDto> findPlanListUserByName(String name) {
         return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
                 "from plan p inner join users u on p.userId=u.id " +
-                "where u.name = ?", planRowMapper(), name);
+                "where u.name = ? " +
+                "order by p.updateAt desc", planRowMapper(), name);
     }
 
     @Override
     public List<PlanResponseDto> findPlanListUserByUpdateAt(LocalDate updateAt) {
         return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
                 "from plan p inner join users u on p.userId=u.id " +
-                "where DATE (p.updateAt) = ?", planRowMapper(), updateAt);
+                "where DATE (p.updateAt) = ? " +
+                "order by p.updateAt desc", planRowMapper(), updateAt);
     }
 
     // plan id로 Plan 데이터 찾기 없을경우 오류 반환
