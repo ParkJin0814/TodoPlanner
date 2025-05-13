@@ -34,15 +34,16 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         parameters.put("content", plan.getContent());
         parameters.put("createAt", plan.getCreateAt());
         parameters.put("updateAt", plan.getUpdateAt());
+        String name = jdbcTemplate.queryForObject("select name from users where id = ?", String.class, plan.getUserId());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        return new PlanResponseDto(key.longValue(), plan.getUserId(), plan.getTitle(), plan.getContent(), plan.getCreateAt(), plan.getUpdateAt());
+        return new PlanResponseDto(key.longValue(), plan.getTitle(), plan.getContent(), plan.getCreateAt(), plan.getUpdateAt(), name);
     }
 
     @Override
     public List<PlanResponseDto> findAllPlans() {
-        return jdbcTemplate.query("select * from plan", planRowMapper());
+        return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  from plan p inner join users u on p.userId=u.id", planRowMapper());
     }
 
     private RowMapper<PlanResponseDto> planRowMapper() {
@@ -51,11 +52,11 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
             public PlanResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new PlanResponseDto(
                         rs.getLong("id"),
-                        rs.getLong("userId"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getTimestamp("createAt").toLocalDateTime(),
-                        rs.getTimestamp("updateAt").toLocalDateTime()
+                        rs.getTimestamp("updateAt").toLocalDateTime(),
+                        rs.getString("name")
                 );
             }
         };

@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PlanResponseDto {
     private Long id;
-    private Long userId;
     private String title;
     private String content;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
+    private String name;
 }

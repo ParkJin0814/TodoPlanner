@@ -1,6 +1,5 @@
 package com.example.todoplanner.repository;
 
-import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.dto.UserResponseDto;
 import com.example.todoplanner.entity.User;
 import org.springframework.http.HttpStatus;
@@ -44,13 +43,13 @@ public class JdbcTemplateUserRepository implements UserRepository{
 
     @Override
     public User userPlanByIdOrElseThrow(Long id) {
-        List<User> result = jdbcTemplate.query("select * from users where id = ?", userRowMapperV2(), id);
+        List<User> result = jdbcTemplate.query("select * from users where id = ?", userRowMapper(), id);
         return result.stream()
                 .findAny()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist userId = " + id));
     }
 
-    private RowMapper<User> userRowMapperV2() {
+    private RowMapper<User> userRowMapper() {
         return new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs, int rowNum) throws SQLException {
