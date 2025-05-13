@@ -4,11 +4,11 @@ import com.example.todoplanner.dto.PlanRequestDto;
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.entity.Plan;
 import com.example.todoplanner.entity.User;
+import com.example.todoplanner.exception.PasswordMismatchException;
+import com.example.todoplanner.exception.PlanContentNotFoundException;
 import com.example.todoplanner.repository.PlanRepository;
 import com.example.todoplanner.repository.UserRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -58,12 +58,13 @@ public class PlanServiceImpl implements PlanService {
     public PlanResponseDto updatePlanContent(Long id, String password, String content) {
         Plan plan = planRepository.findPlanByIdOrElseThrow(id);
         User user = userRepository.findUserByIdOrElseThrow(plan.getUserId());
+        // 비밀번호 검증
         if (!password.equals(plan.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The password is incorrect.");
+            throw new PasswordMismatchException();
         }
 
         if (content == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name and content are required values.");
+            throw new PlanContentNotFoundException();
         }
 
         planRepository.updatePlanContent(id, content);
@@ -75,9 +76,8 @@ public class PlanServiceImpl implements PlanService {
     public void deletePlan(Long id, String password) {
         Plan plan = planRepository.findPlanByIdOrElseThrow(id);
 
-
-        if (!plan.getPassword().equals(password)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The password is incorrect.");
+        if (!password.equals(plan.getPassword())) {
+            throw new PasswordMismatchException();
         }
 
         planRepository.deletePlan(id);

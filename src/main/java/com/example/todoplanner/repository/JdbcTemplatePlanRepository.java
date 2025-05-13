@@ -2,13 +2,12 @@ package com.example.todoplanner.repository;
 
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.entity.Plan;
-import org.springframework.http.HttpStatus;
+import com.example.todoplanner.exception.PlanNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -79,7 +78,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         List<Plan> result = jdbcTemplate.query("select * from plan where id = ?", planRowMapperV2(), id);
         return result.stream()
                 .findAny()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id));
+                .orElseThrow(() -> new PlanNotFoundException(id));
     }
 
     @Override
