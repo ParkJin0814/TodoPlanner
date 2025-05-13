@@ -2,7 +2,6 @@ package com.example.todoplanner.repository;
 
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.entity.Plan;
-import com.example.todoplanner.entity.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -65,8 +64,13 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     }
 
     @Override
-    public int updatePlanContent(Long id, String content) {
-        return jdbcTemplate.update("update plan set  content = ?, updateAt = ? where id = ?", content, LocalDateTime.now(), id);
+    public void updatePlanContent(Long id, String content) {
+        jdbcTemplate.update("update plan set  content = ?, updateAt = ? where id = ?", content, LocalDateTime.now(), id);
+    }
+
+    @Override
+    public void deletePlan(Long id) {
+        jdbcTemplate.update("delete from plan where id = ?", id);
     }
 
     // 쿼리 반환타입매서드

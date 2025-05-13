@@ -45,4 +45,14 @@ public class PlanController {
     ) {
         return new ResponseEntity<>(planService.updatePlanContent(id, dto.getPassword(), dto.getContent()), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePlan(
+            @PathVariable Long id,
+            @RequestParam String password
+    ) {
+        planService.deletePlan(id, password);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
