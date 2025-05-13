@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("title", plan.getTitle());
         parameters.put("userId", plan.getUserId());
+        parameters.put("password", plan.getPassword());
         parameters.put("content", plan.getContent());
         parameters.put("createAt", plan.getCreateAt());
         parameters.put("updateAt", plan.getUpdateAt());
@@ -60,6 +62,11 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return result.stream()
                 .findAny()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id));
+    }
+
+    @Override
+    public int updatePlanContent(Long id, String content) {
+        return jdbcTemplate.update("update plan set  content = ?, updateAt = ? where id = ?", content, LocalDateTime.now(), id);
     }
 
     // 쿼리 반환타입매서드
@@ -87,6 +94,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
                 return new Plan(
                         rs.getLong("id"),
                         rs.getLong("userId"),
+                        rs.getString("password"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getTimestamp("createAt").toLocalDateTime(),

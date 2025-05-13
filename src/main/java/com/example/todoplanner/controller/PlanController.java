@@ -36,4 +36,13 @@ public class PlanController {
     public ResponseEntity<PlanResponseDto> findPlanById(@PathVariable Long id) {
         return new ResponseEntity<>(planService.findPlanById(id), HttpStatus.OK);
     }
+
+    // 내용수정
+    @PutMapping("/{id}")
+    public ResponseEntity<PlanResponseDto> updateContentPlanById(
+            @PathVariable Long id,
+            @RequestBody PlanRequestDto dto
+    ) {
+        return new ResponseEntity<>(planService.updatePlanContent(id, dto.getPassword(), dto.getContent()), HttpStatus.OK);
+    }
 }

@@ -11,4 +11,6 @@ public interface PlanRepository {
     List<PlanResponseDto> findAllPlans();
 
     Plan findPlanByIdOrElseThrow(Long id);
+
+    int updatePlanContent(Long id, String contents);
 }

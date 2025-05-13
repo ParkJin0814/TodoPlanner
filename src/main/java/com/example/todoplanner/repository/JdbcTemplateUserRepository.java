@@ -34,13 +34,12 @@ public class JdbcTemplateUserRepository implements UserRepository{
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", user.getName());
         parameters.put("email", user.getEmail());
-        parameters.put("password", user.getPassword());
         parameters.put("createAt", user.getCreateAt());
         parameters.put("updateAt", user.getUpdateAt());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        return new UserResponseDto(key.longValue(), user.getName(), user.getEmail(), user.getPassword(), user.getCreateAt(), user.getUpdateAt());
+        return new UserResponseDto(key.longValue(), user.getName(), user.getEmail(), user.getCreateAt(), user.getUpdateAt());
     }
 
     // user id로 Plan 데이터 찾기 없을경우 오류 반환
@@ -61,7 +60,6 @@ public class JdbcTemplateUserRepository implements UserRepository{
                         rs.getLong("id"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getString("password"),
                         rs.getTimestamp("createAt").toLocalDateTime(),
                         rs.getTimestamp("updateAt").toLocalDateTime()
                 );
