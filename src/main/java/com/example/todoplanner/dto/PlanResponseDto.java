@@ -15,15 +15,15 @@ public class PlanResponseDto {
     private String content;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-    private String name;
+    private UserResponseDto userResponseDto;
 
-    public PlanResponseDto(Plan plan, String name) {
+    public PlanResponseDto(Plan plan, UserResponseDto dto) {
         this.id = plan.getId();
         this.title = plan.getTitle();
         this.content = plan.getContent();
         this.createAt = plan.getCreateAt();
         this.updateAt = plan.getCreateAt();
 
-        this.name = name;
+        this.userResponseDto = dto;
     }
 }
