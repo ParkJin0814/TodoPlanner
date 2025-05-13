@@ -1,5 +1,7 @@
 package com.example.todoplanner.repository;
 
+import com.example.todoplanner.dto.PageRequestDto;
+import com.example.todoplanner.dto.PageResponseDto;
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.entity.Plan;
 import com.example.todoplanner.exception.PlanNotFoundException;
@@ -50,26 +52,42 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     // jdbc 테이블 조회 및 PlanResponseDto 정보담기
     @Override
-    public List<PlanResponseDto> findAllPlans() {
-        return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name " +
-                "from plan p inner join users u on p.userId=u.id " +
-                "order by p.updateAt desc", planRowMapper());
+    public PageResponseDto findAllPlans(PageRequestDto dto) {
+        Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan", Integer.class);
+        List<PlanResponseDto> plans =
+                jdbcTemplate.query("select p.id, p.title, p.content, p.createat, p.updateat, u.name " +
+                        "from plan p inner join users u on p.userid = u.id " +
+                        "order by p.updateat desc " +
+                        "limit ? offset ?", planRowMapper(), dto.getSize(), dto.getOffset());
+
+        // PageResponseDto 반환
+        return new PageResponseDto(plans, dto, totalCount);
     }
 
     @Override
-    public List<PlanResponseDto> findPlanListUserByName(String name) {
-        return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
-                "from plan p inner join users u on p.userId=u.id " +
-                "where u.name = ? " +
-                "order by p.updateAt desc", planRowMapper(), name);
+    public PageResponseDto findPlanListUserByName(String name, PageRequestDto dto) {
+        Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan p inner join users u on p.userId=u.id where u.name = ?", Integer.class, name);
+        List<PlanResponseDto> plans =
+                jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
+                        "from plan p inner join users u on p.userId=u.id " +
+                        "where u.name = ? " +
+                        "order by p.updateAt desc " +
+                        "limit ? offset ?", planRowMapper(), name, dto.getSize(), dto.getOffset());
+
+        return new PageResponseDto(plans, dto, totalCount);
     }
 
     @Override
-    public List<PlanResponseDto> findPlanListUserByUpdateAt(LocalDate updateAt) {
-        return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
-                "from plan p inner join users u on p.userId=u.id " +
-                "where DATE (p.updateAt) = ? " +
-                "order by p.updateAt desc", planRowMapper(), updateAt);
+    public PageResponseDto findPlanListUserByUpdateAt(LocalDate updateAt, PageRequestDto dto) {
+        Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan where date (updateAt) = ?", Integer.class, updateAt);
+        List<PlanResponseDto> plans =
+                jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
+                        "from plan p inner join users u on p.userId=u.id " +
+                        "where DATE (p.updateAt) = ? " +
+                        "order by p.updateAt desc " +
+                        "limit ? offset ?", planRowMapper(), updateAt, dto.getSize(), dto.getOffset());
+
+        return new PageResponseDto(plans, dto, totalCount);
     }
 
     // plan id로 Plan 데이터 찾기 없을경우 오류 반환

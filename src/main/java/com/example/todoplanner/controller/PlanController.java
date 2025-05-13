@@ -1,5 +1,7 @@
 package com.example.todoplanner.controller;
 
+import com.example.todoplanner.dto.PageRequestDto;
+import com.example.todoplanner.dto.PageResponseDto;
 import com.example.todoplanner.dto.PlanRequestDto;
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.service.PlanService;
@@ -26,10 +28,12 @@ public class PlanController {
         return new ResponseEntity<>(planService.savePlan(dto), HttpStatus.CREATED);
     }
 
-    // 전체조회
     @GetMapping
-    public ResponseEntity<List<PlanResponseDto>> findAllPlans() {
-        return new ResponseEntity<>(planService.findAllPlans(), HttpStatus.OK);
+    public ResponseEntity<PageResponseDto> findAllPlans(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequestDto dto = new PageRequestDto(page, size);
+        return new ResponseEntity<>(planService.findAllPlans(dto), HttpStatus.OK);
     }
 
     // 고유식별자로 단건조회
@@ -40,14 +44,17 @@ public class PlanController {
 
     // 작성자, 수정일 조회
     @GetMapping("/search")
-    public ResponseEntity<List<PlanResponseDto>> searchPlans(
+    public ResponseEntity<PageResponseDto> searchPlans(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) LocalDate updateAt) {
-
+            @RequestParam(required = false) LocalDate updateAt,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageRequestDto dto = new PageRequestDto(page, size);
         if (name != null) {
-            return ResponseEntity.ok(planService.findPlanListUserByName(name));
+            return ResponseEntity.ok(planService.findPlanListUserByName(name, dto));
         } else if (updateAt != null) {
-            return ResponseEntity.ok(planService.findPlanListUserByUpdateAt(updateAt));
+            return ResponseEntity.ok(planService.findPlanListUserByUpdateAt(updateAt, dto));
         }
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please search for the name or updateAt");

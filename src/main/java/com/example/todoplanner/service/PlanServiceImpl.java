@@ -1,5 +1,7 @@
 package com.example.todoplanner.service;
 
+import com.example.todoplanner.dto.PageRequestDto;
+import com.example.todoplanner.dto.PageResponseDto;
 import com.example.todoplanner.dto.PlanRequestDto;
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.entity.Plan;
@@ -32,8 +34,8 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanResponseDto> findAllPlans() {
-        return planRepository.findAllPlans();
+    public PageResponseDto findAllPlans(PageRequestDto dto) {
+        return planRepository.findAllPlans(dto);
     }
 
     @Override
@@ -45,13 +47,13 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanResponseDto> findPlanListUserByName(String name) {
-        return planRepository.findPlanListUserByName(name);
+    public PageResponseDto findPlanListUserByName(String name, PageRequestDto dto) {
+        return planRepository.findPlanListUserByName(name, dto);
     }
 
     @Override
-    public List<PlanResponseDto> findPlanListUserByUpdateAt(LocalDate updateAt) {
-        return planRepository.findPlanListUserByUpdateAt(updateAt);
+    public PageResponseDto findPlanListUserByUpdateAt(LocalDate updateAt, PageRequestDto dto) {
+        return planRepository.findPlanListUserByUpdateAt(updateAt, dto);
     }
 
     @Override

@@ -1,15 +1,16 @@
 package com.example.todoplanner.repository;
 
+import com.example.todoplanner.dto.PageRequestDto;
+import com.example.todoplanner.dto.PageResponseDto;
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.entity.Plan;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public interface PlanRepository {
     PlanResponseDto savePlan(Plan plan);
 
-    List<PlanResponseDto> findAllPlans();
+    PageResponseDto findAllPlans(PageRequestDto dto);
 
     Plan findPlanByIdOrElseThrow(Long id);
 
@@ -17,7 +18,7 @@ public interface PlanRepository {
 
     void deletePlan(Long id);
 
-    List<PlanResponseDto> findPlanListUserByName(String name);
+    PageResponseDto findPlanListUserByName(String name, PageRequestDto dto);
 
-    List<PlanResponseDto> findPlanListUserByUpdateAt(LocalDate updateAt);
+    PageResponseDto findPlanListUserByUpdateAt(LocalDate updateAt, PageRequestDto dto);
 }
