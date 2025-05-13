@@ -1,5 +1,6 @@
 package com.example.todoplanner.dto;
 
+import com.example.todoplanner.entity.Plan;
 import com.example.todoplanner.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,4 +16,14 @@ public class PlanResponseDto {
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private String name;
+
+    public PlanResponseDto(Plan plan, String name) {
+        this.id = plan.getId();
+        this.title = plan.getTitle();
+        this.content = plan.getContent();
+        this.createAt = plan.getCreateAt();
+        this.updateAt = plan.getCreateAt();
+
+        this.name = name;
+    }
 }

@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
+    //생성자
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    // 유저생성
     @PostMapping
     public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto dto) {
         return new ResponseEntity<>(userService.saveUser(dto), HttpStatus.CREATED);
