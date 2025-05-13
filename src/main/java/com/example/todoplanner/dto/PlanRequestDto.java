@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Getter
 public class PlanRequestDto {
     private Long userId;
+    private String password;
     private String title;
     private String content;
     private LocalDateTime createAt;

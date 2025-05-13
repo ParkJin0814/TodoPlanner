@@ -11,4 +11,6 @@ public interface PlanService {
     List<PlanResponseDto> findAllPlans();
 
     PlanResponseDto findPlanById(Long id);
+
+    PlanResponseDto updatePlanContent(Long id, String password, String content);
 }

@@ -10,21 +10,18 @@ import java.time.LocalDateTime;
 public class Plan {
     private Long id;
     private Long userId;
+    private String password;
     private String title;
     private String content;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
-    public Plan(Long userId, String title, String content) {
+    public Plan(Long userId, String password, String title, String content) {
         this.userId = userId;
+        this.password = password;
         this.title = title;
         this.content = content;
         this.createAt = LocalDateTime.now();
-        this.updateAt = LocalDateTime.now();
-    }
-
-    public void updateContent(String content) {
-        this.content = this.content;
         this.updateAt = LocalDateTime.now();
     }
 }
