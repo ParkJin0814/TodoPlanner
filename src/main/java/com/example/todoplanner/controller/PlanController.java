@@ -27,8 +27,8 @@ public class PlanController {
 
     // 전체조회
     @GetMapping
-    public List<PlanResponseDto> findAllPlans() {
-        return planService.findAllPlans();
+    public ResponseEntity<List<PlanResponseDto>> findAllPlans() {
+        return new ResponseEntity<>(planService.findAllPlans(), HttpStatus.OK);
     }
 
     // 고유식별자로 단건조회
@@ -36,6 +36,16 @@ public class PlanController {
     public ResponseEntity<PlanResponseDto> findPlanById(@PathVariable Long id) {
         return new ResponseEntity<>(planService.findPlanById(id), HttpStatus.OK);
     }
+
+    // 작성자 조회
+    @GetMapping("/search")
+    public ResponseEntity<List<PlanResponseDto>> findPlanListUserByName(@RequestParam String name) {
+        return new ResponseEntity<>(planService.findPlanListUserByName(name), HttpStatus.OK);
+    }
+
+
+    // 수정일 조회
+
 
     // 내용수정
     @PutMapping("/{id}")
@@ -46,6 +56,7 @@ public class PlanController {
         return new ResponseEntity<>(planService.updatePlanContent(id, dto.getPassword(), dto.getContent()), HttpStatus.OK);
     }
 
+    // 일정삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePlan(
             @PathVariable Long id,

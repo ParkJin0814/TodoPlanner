@@ -44,6 +44,11 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    public List<PlanResponseDto> findPlanListUserByName(String name) {
+        return planRepository.findPlanListUserByName(name);
+    }
+
+    @Override
     public PlanResponseDto updatePlanContent(Long id, String password, String content) {
         Plan plan = planRepository.findPlanByIdOrElseThrow(id);
         User user = userRepository.findUserByIdOrElseThrow(plan.getUserId());
@@ -71,4 +76,6 @@ public class PlanServiceImpl implements PlanService {
 
         planRepository.deletePlan(id);
     }
+
+
 }

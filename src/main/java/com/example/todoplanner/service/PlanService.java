@@ -15,4 +15,6 @@ public interface PlanService {
     PlanResponseDto updatePlanContent(Long id, String password, String content);
 
     void deletePlan(Long id, String password);
+
+    List<PlanResponseDto> findPlanListUserByName(String name);
 }
