@@ -56,7 +56,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     // plan id로 Plan 데이터 찾기 없을경우 오류 반환
     @Override
     public Plan findPlanByIdOrElseThrow(Long id) {
-        List<Plan> result = jdbcTemplate.query("select * from users where id = ?", planRowMapperV2(), id);
+        List<Plan> result = jdbcTemplate.query("select * from plan where id = ?", planRowMapperV2(), id);
         return result.stream()
                 .findAny()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id));
