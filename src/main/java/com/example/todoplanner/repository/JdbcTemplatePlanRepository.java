@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,13 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
                 "from plan p inner join users u on p.userId=u.id " +
                 "where u.name = ?", planRowMapper(), name);
+    }
+
+    @Override
+    public List<PlanResponseDto> findPlanListUserByUpdateAt(LocalDate updateAt) {
+        return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
+                "from plan p inner join users u on p.userId=u.id " +
+                "where DATE (p.updateAt) = ?", planRowMapper(), updateAt);
     }
 
     // plan id로 Plan 데이터 찾기 없을경우 오류 반환

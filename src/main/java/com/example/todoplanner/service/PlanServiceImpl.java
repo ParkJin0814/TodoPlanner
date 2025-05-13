@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -46,6 +47,11 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public List<PlanResponseDto> findPlanListUserByName(String name) {
         return planRepository.findPlanListUserByName(name);
+    }
+
+    @Override
+    public List<PlanResponseDto> findPlanListUserByUpdateAt(LocalDate updateAt) {
+        return planRepository.findPlanListUserByUpdateAt(updateAt);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.todoplanner.repository;
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.entity.Plan;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PlanRepository {
@@ -17,4 +18,6 @@ public interface PlanRepository {
     void deletePlan(Long id);
 
     List<PlanResponseDto> findPlanListUserByName(String name);
+
+    List<PlanResponseDto> findPlanListUserByUpdateAt(LocalDate updateAt);
 }
