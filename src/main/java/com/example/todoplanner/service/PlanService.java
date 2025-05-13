@@ -13,4 +13,6 @@ public interface PlanService {
     PlanResponseDto findPlanById(Long id);
 
     PlanResponseDto updatePlanContent(Long id, String password, String content);
+
+    void deletePlan(Long id, String password);
 }

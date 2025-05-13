@@ -59,4 +59,16 @@ public class PlanServiceImpl implements PlanService {
 
         return new PlanResponseDto(planRepository.findPlanByIdOrElseThrow(id), user.getName());
     }
+
+    @Override
+    public void deletePlan(Long id, String password) {
+        Plan plan = planRepository.findPlanByIdOrElseThrow(id);
+
+
+        if (!plan.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The password is incorrect.");
+        }
+
+        planRepository.deletePlan(id);
+    }
 }

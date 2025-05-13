@@ -12,5 +12,7 @@ public interface PlanRepository {
 
     Plan findPlanByIdOrElseThrow(Long id);
 
-    int updatePlanContent(Long id, String contents);
+    void updatePlanContent(Long id, String contents);
+
+    void deletePlan(Long id);
 }
