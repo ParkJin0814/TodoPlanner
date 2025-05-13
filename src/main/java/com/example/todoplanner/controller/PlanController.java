@@ -6,7 +6,8 @@ import com.example.todoplanner.service.PlanService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -37,14 +38,21 @@ public class PlanController {
         return new ResponseEntity<>(planService.findPlanById(id), HttpStatus.OK);
     }
 
-    // 작성자 조회
+    // 작성자, 수정일 조회
     @GetMapping("/search")
-    public ResponseEntity<List<PlanResponseDto>> findPlanListUserByName(@RequestParam String name) {
-        return new ResponseEntity<>(planService.findPlanListUserByName(name), HttpStatus.OK);
+    public ResponseEntity<List<PlanResponseDto>> searchPlans(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) LocalDate updateAt) {
+
+        if (name != null) {
+            return ResponseEntity.ok(planService.findPlanListUserByName(name));
+        } else if (updateAt != null) {
+            return ResponseEntity.ok(planService.findPlanListUserByUpdateAt(updateAt));
+        }
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please search for the name or updateAt");
     }
 
-
-    // 수정일 조회
 
 
     // 내용수정
