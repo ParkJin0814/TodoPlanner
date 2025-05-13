@@ -3,7 +3,9 @@ package com.example.todoplanner.repository;
 import com.example.todoplanner.dto.PageRequestDto;
 import com.example.todoplanner.dto.PageResponseDto;
 import com.example.todoplanner.dto.PlanResponseDto;
+import com.example.todoplanner.dto.UserResponseDto;
 import com.example.todoplanner.entity.Plan;
+import com.example.todoplanner.entity.User;
 import com.example.todoplanner.exception.PlanNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -43,11 +45,11 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         parameters.put("content", plan.getContent());
         parameters.put("createAt", plan.getCreateAt());
         parameters.put("updateAt", plan.getUpdateAt());
-        String name = userRepository.findUserByIdOrElseThrow(plan.getUserId()).getName();
-
+        User user = userRepository.findUserByIdOrElseThrow(plan.getUserId());
+        UserResponseDto userDto = new UserResponseDto(user);
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        return new PlanResponseDto(key.longValue(), plan.getTitle(), plan.getContent(), plan.getCreateAt(), plan.getUpdateAt(), name);
+        return new PlanResponseDto(key.longValue(), plan.getTitle(), plan.getContent(), plan.getCreateAt(), plan.getUpdateAt(), userDto);
     }
 
     // jdbc 테이블 조회 및 PlanResponseDto 정보담기
@@ -55,7 +57,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     public PageResponseDto findAllPlans(PageRequestDto dto) {
         Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan", Integer.class);
         List<PlanResponseDto> plans =
-                jdbcTemplate.query("select p.id, p.title, p.content, p.createat, p.updateat, u.name " +
+                jdbcTemplate.query("select p.id, p.userId, p.title, p.content, p.createat, p.updateat, u.name " +
                         "from plan p inner join users u on p.userid = u.id " +
                         "order by p.updateat desc " +
                         "limit ? offset ?", planRowMapper(), dto.getSize(), dto.getOffset());
@@ -68,7 +70,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     public PageResponseDto findPlanListUserByName(String name, PageRequestDto dto) {
         Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan p inner join users u on p.userId=u.id where u.name = ?", Integer.class, name);
         List<PlanResponseDto> plans =
-                jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
+                jdbcTemplate.query("select p.id, p.userId, p.title, p.content, p.createAt, p.updateAt, u.name  " +
                         "from plan p inner join users u on p.userId=u.id " +
                         "where u.name = ? " +
                         "order by p.updateAt desc " +
@@ -81,7 +83,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     public PageResponseDto findPlanListUserByUpdateAt(LocalDate updateAt, PageRequestDto dto) {
         Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan where date (updateAt) = ?", Integer.class, updateAt);
         List<PlanResponseDto> plans =
-                jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
+                jdbcTemplate.query("select p.id, p.userId, p.title, p.content, p.createAt, p.updateAt, u.name  " +
                         "from plan p inner join users u on p.userId=u.id " +
                         "where DATE (p.updateAt) = ? " +
                         "order by p.updateAt desc " +
@@ -114,13 +116,15 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return new RowMapper<PlanResponseDto>() {
             @Override
             public PlanResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                User user = userRepository.findUserByIdOrElseThrow(rs.getLong("userId"));
+                UserResponseDto userDto = new UserResponseDto(user);
                 return new PlanResponseDto(
                         rs.getLong("id"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getTimestamp("createAt").toLocalDateTime(),
                         rs.getTimestamp("updateAt").toLocalDateTime(),
-                        rs.getString("name")
+                        userDto
                 );
             }
         };

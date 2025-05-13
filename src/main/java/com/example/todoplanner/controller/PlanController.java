@@ -5,6 +5,7 @@ import com.example.todoplanner.dto.PageResponseDto;
 import com.example.todoplanner.dto.PlanRequestDto;
 import com.example.todoplanner.dto.PlanResponseDto;
 import com.example.todoplanner.service.PlanService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class PlanController {
 
     // 일정생성
     @PostMapping
-    public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto dto) {
+    public ResponseEntity<PlanResponseDto> createPlan(@Valid @RequestBody PlanRequestDto dto) {
         return new ResponseEntity<>(planService.savePlan(dto), HttpStatus.CREATED);
     }
 
@@ -66,7 +67,7 @@ public class PlanController {
     @PutMapping("/{id}")
     public ResponseEntity<PlanResponseDto> updateContentPlanById(
             @PathVariable Long id,
-            @RequestBody PlanRequestDto dto
+            @Valid @RequestBody PlanRequestDto dto
     ) {
         return new ResponseEntity<>(planService.updatePlanContent(id, dto.getPassword(), dto.getContent()), HttpStatus.OK);
     }

@@ -1,9 +1,6 @@
 package com.example.todoplanner.service;
 
-import com.example.todoplanner.dto.PageRequestDto;
-import com.example.todoplanner.dto.PageResponseDto;
-import com.example.todoplanner.dto.PlanRequestDto;
-import com.example.todoplanner.dto.PlanResponseDto;
+import com.example.todoplanner.dto.*;
 import com.example.todoplanner.entity.Plan;
 import com.example.todoplanner.entity.User;
 import com.example.todoplanner.exception.PasswordMismatchException;
@@ -41,9 +38,8 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public PlanResponseDto findPlanById(Long id) {
         Plan plan = planRepository.findPlanByIdOrElseThrow(id);
-        String name = userRepository.findUserByIdOrElseThrow(plan.getUserId()).getName();
 
-        return new PlanResponseDto(plan, name);
+        return new PlanResponseDto(plan, new UserResponseDto(userRepository.findUserByIdOrElseThrow(plan.getUserId())));
     }
 
     @Override
@@ -71,7 +67,7 @@ public class PlanServiceImpl implements PlanService {
 
         planRepository.updatePlanContent(id, content);
 
-        return new PlanResponseDto(planRepository.findPlanByIdOrElseThrow(id), user.getName());
+        return new PlanResponseDto(planRepository.findPlanByIdOrElseThrow(id), new UserResponseDto(user));
     }
 
     @Override
