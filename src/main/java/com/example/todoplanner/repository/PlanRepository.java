@@ -9,4 +9,6 @@ public interface PlanRepository {
     PlanResponseDto savePlan(Plan plan);
 
     List<PlanResponseDto> findAllPlans();
+
+    Plan findPlanByIdOrElseThrow(Long id);
 }

@@ -9,4 +9,6 @@ public interface PlanService {
     PlanResponseDto savePlan(PlanRequestDto dto);
 
     List<PlanResponseDto> findAllPlans();
+
+    PlanResponseDto findPlanById(Long id);
 }

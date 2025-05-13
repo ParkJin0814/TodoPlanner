@@ -20,10 +20,12 @@ import java.util.Map;
 public class JdbcTemplateUserRepository implements UserRepository{
     private final JdbcTemplate jdbcTemplate;
 
+    // 생성자
     public JdbcTemplateUserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // jdbc 유저 테이블 정보 생성
     @Override
     public UserResponseDto saveUser(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
@@ -41,14 +43,16 @@ public class JdbcTemplateUserRepository implements UserRepository{
         return new UserResponseDto(key.longValue(), user.getName(), user.getEmail(), user.getPassword(), user.getCreateAt(), user.getUpdateAt());
     }
 
+    // user id로 Plan 데이터 찾기 없을경우 오류 반환
     @Override
-    public User userPlanByIdOrElseThrow(Long id) {
+    public User findUserByIdOrElseThrow(Long id) {
         List<User> result = jdbcTemplate.query("select * from users where id = ?", userRowMapper(), id);
         return result.stream()
                 .findAny()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist userId = " + id));
     }
 
+    // 쿼리 반환타입매서드
     private RowMapper<User> userRowMapper() {
         return new RowMapper<User>() {
             @Override
