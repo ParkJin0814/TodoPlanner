@@ -13,16 +13,19 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 출처 : https://jyami.tistory.com/55  아직 이 매서드 이해 불가 추후 다시 봐야함
+    // 출처 : https://jyami.tistory.com/55
     // ValidException에 대한 에러를 처리하는거로 확인됨
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex){
+
+        //아직 내용 이해 못함 추후 다시 확인예정
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors()
                 .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
     }
 
+    // 예외처리
     @ExceptionHandler(PlannerException.class)
     public ResponseEntity<ErrorResponseDto> handlePlannerException(PlannerException e) {
         ErrorResponseDto response = new ErrorResponseDto(e.getStatus(), e.getMessage());

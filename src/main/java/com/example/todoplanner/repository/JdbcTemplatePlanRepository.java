@@ -66,6 +66,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return new PageResponseDto(plans, dto, totalCount);
     }
 
+    // 작성자 이름으로 찾기
     @Override
     public PageResponseDto findPlanListUserByName(String name, PageRequestDto dto) {
         Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan p inner join users u on p.userId=u.id where u.name = ?", Integer.class, name);
@@ -79,6 +80,7 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return new PageResponseDto(plans, dto, totalCount);
     }
 
+    // 수정일 기준으로 찾기
     @Override
     public PageResponseDto findPlanListUserByUpdateAt(LocalDate updateAt, PageRequestDto dto) {
         Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan where date (updateAt) = ?", Integer.class, updateAt);
