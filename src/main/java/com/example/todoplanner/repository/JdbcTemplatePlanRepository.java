@@ -54,6 +54,13 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  from plan p inner join users u on p.userId=u.id", planRowMapper());
     }
 
+    @Override
+    public List<PlanResponseDto> findPlanListUserByName(String name) {
+        return jdbcTemplate.query("select p.id, p.title, p.content, p.createAt, p.updateAt, u.name  " +
+                "from plan p inner join users u on p.userId=u.id " +
+                "where u.name = ?", planRowMapper(), name);
+    }
+
     // plan id로 Plan 데이터 찾기 없을경우 오류 반환
     @Override
     public Plan findPlanByIdOrElseThrow(Long id) {

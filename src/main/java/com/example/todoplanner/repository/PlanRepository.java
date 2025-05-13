@@ -15,4 +15,6 @@ public interface PlanRepository {
     void updatePlanContent(Long id, String contents);
 
     void deletePlan(Long id);
+
+    List<PlanResponseDto> findPlanListUserByName(String name);
 }
