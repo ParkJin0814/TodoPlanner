@@ -18,7 +18,7 @@ public interface PlanService {
 
     void deletePlan(Long id, String password);
 
-    PageResponseDto findPlanListUserByName(String name, PageRequestDto dto);
+    PageResponseDto findPlanListByUserId(Long userId, PageRequestDto dto);
 
-    PageResponseDto findPlanListUserByUpdateAt(LocalDate updateAt, PageRequestDto dto);
+    PageResponseDto findPlanListByUpdateAt(LocalDate updateAt, PageRequestDto dto);
 }

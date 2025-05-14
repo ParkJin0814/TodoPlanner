@@ -57,9 +57,9 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
     public PageResponseDto findAllPlans(PageRequestDto dto) {
         Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan", Integer.class);
         List<PlanResponseDto> plans =
-                jdbcTemplate.query("select p.id, p.userId, p.title, p.content, p.createat, p.updateat, u.name " +
-                        "from plan p inner join users u on p.userid = u.id " +
-                        "order by p.updateat desc " +
+                jdbcTemplate.query("select * " +
+                        "from plan " +
+                        "order by updateat desc " +
                         "limit ? offset ?", planRowMapper(), dto.getSize(), dto.getOffset());
 
         // PageResponseDto 반환
@@ -68,27 +68,27 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
 
     // 작성자 이름으로 찾기
     @Override
-    public PageResponseDto findPlanListUserByName(String name, PageRequestDto dto) {
-        Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan p inner join users u on p.userId=u.id where u.name = ?", Integer.class, name);
+    public PageResponseDto findPlanListByUserId(Long userId, PageRequestDto dto) {
+        Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan where userId = ?", Integer.class, userId);
         List<PlanResponseDto> plans =
-                jdbcTemplate.query("select p.id, p.userId, p.title, p.content, p.createAt, p.updateAt, u.name  " +
-                        "from plan p inner join users u on p.userId=u.id " +
-                        "where u.name = ? " +
-                        "order by p.updateAt desc " +
-                        "limit ? offset ?", planRowMapper(), name, dto.getSize(), dto.getOffset());
+                jdbcTemplate.query("select * " +
+                        "from plan " +
+                        "where userId = ? " +
+                        "order by updateAt desc " +
+                        "limit ? offset ?", planRowMapper(), userId, dto.getSize(), dto.getOffset());
 
         return new PageResponseDto(plans, dto, totalCount);
     }
 
     // 수정일 기준으로 찾기
     @Override
-    public PageResponseDto findPlanListUserByUpdateAt(LocalDate updateAt, PageRequestDto dto) {
+    public PageResponseDto findPlanListByUpdateAt(LocalDate updateAt, PageRequestDto dto) {
         Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan where date (updateAt) = ?", Integer.class, updateAt);
         List<PlanResponseDto> plans =
-                jdbcTemplate.query("select p.id, p.userId, p.title, p.content, p.createAt, p.updateAt, u.name  " +
-                        "from plan p inner join users u on p.userId=u.id " +
-                        "where DATE (p.updateAt) = ? " +
-                        "order by p.updateAt desc " +
+                jdbcTemplate.query("select * " +
+                        "from plan " +
+                        "where DATE (updateAt) = ? " +
+                        "order by updateAt desc " +
                         "limit ? offset ?", planRowMapper(), updateAt, dto.getSize(), dto.getOffset());
 
         return new PageResponseDto(plans, dto, totalCount);
