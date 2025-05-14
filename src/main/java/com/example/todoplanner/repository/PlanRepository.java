@@ -21,4 +21,6 @@ public interface PlanRepository {
     PageResponseDto findPlanListByUserId(Long userId, PageRequestDto dto);
 
     PageResponseDto findPlanListByUpdateAt(LocalDate updateAt, PageRequestDto dto);
+
+    PageResponseDto findPlanListByUserIdAndUpdateAt(Long userId, LocalDate updateAt, PageRequestDto dto);
 }

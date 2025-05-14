@@ -94,6 +94,19 @@ public class JdbcTemplatePlanRepository implements PlanRepository {
         return new PageResponseDto(plans, dto, totalCount);
     }
 
+    @Override
+    public PageResponseDto findPlanListByUserIdAndUpdateAt(Long userId, LocalDate updateAt, PageRequestDto dto) {
+        Integer totalCount = jdbcTemplate.queryForObject("select count(*) from plan where date (updateAt) = ? and userId = ?", Integer.class, updateAt, userId);
+        List<PlanResponseDto> plans =
+                jdbcTemplate.query("select * " +
+                        "from plan " +
+                        "where DATE (updateAt) = ? and userId = ? " +
+                        "order by updateAt desc " +
+                        "limit ? offset ?", planRowMapper(), updateAt, userId, dto.getSize(), dto.getOffset());
+
+        return new PageResponseDto(plans, dto, totalCount);
+    }
+
     // plan id로 Plan 데이터 찾기 없을경우 오류 반환
     @Override
     public Plan findPlanByIdOrElseThrow(Long id) {
