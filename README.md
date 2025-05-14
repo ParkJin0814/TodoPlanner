@@ -10,43 +10,58 @@
 
 ##  API 명세서
 
-| 기능             | Method | URL                                          | Request 형식    | Response 형식 | 상태코드 |
-|----------------|--------|----------------------------------------------|---------------|-------------|------|
-| 일정 생성          | POST   | `/api/planner`                               | JSON          | JSON        | 201  |
-| 일정 전체 조회       | GET    | `/api/planner`                               | -             | JSON        | 200  |
-| 일정 단건 조회       | GET    | `/api/planner/{id}`                          | Path Variable | JSON        | 200  |
-| 일정 조회(작성자고유번호) | GET    | `/api/planner/request-param?userId={userId}` | Query Param   | JSON        | 200  |
-| 일정 조회(수정일)     | GET    | `/api/planner/request-param?updateAt={date}` | Query Param   | JSON        | 200  |
-| 일정 수정          | PUT    | `/api/planner/{id}`                          | JSON          | JSON        | 200  |
-| 일정 삭제          | DELETE | `/api/planner/{id}?password=1234`            | Query Param   | -           | 204  |
-| 유저 생성          | POST   | `/api/user`                                  | JSON          | JSON        | 201  |
-| 유저 단건 조회       | GET    | `/api/user/{id}`                             | Path Variable | JSON        | 200  |
-| 유저 전체 조회       | GET    | `/api/user`                                  | -             | JSON        | 200  |
-| 유저 수정          | PUT    | `/api/user/{id}`                             | JSON          | JSON        | 200  |
-| 유저 삭제          | DELETE | `/api/user/{id}?password=1234`               | Query Param   | -           | 204  |
+| 기능             | Method | URL                                        | Request     | Response    | 상태코드 |
+|----------------|--------|------------------------------------------|---------------|--------------|------|
+| 일정 생성          | POST   | `/api/planner`                           | JSON          | JSON         | 201  |
+| 일정 전체 조회      | GET    | `/api/planner?page=1&size=10`            | Query Param   | Page Response | 200  |
+| 일정 단건 조회      | GET    | `/api/planner/{id}`                      | Path Variable | JSON         | 200  |
+| 일정 검색          | GET    | `/api/planner/search?userId={userId}&page=1&size=10` 또는 `/api/planner/search?updateAt={date}&page=1&size=10` | Query Param | Page Response | 200 |
+| 일정 내용 수정      | PUT    | `/api/planner/{id}`                      | JSON          | JSON         | 200  |
+| 일정 삭제          | DELETE | `/api/planner/{id}?password={password}`   | Path Variable, Query Param | - | 200  |
+| 유저 생성          | POST   | `/api/user`                              | JSON          | JSON         | 201  |
+| 유저 전체 조회      | GET    | `/api/user`                              | -             | JSON List    | 200  |
+| 유저 단건 조회      | GET    | `/api/user/{id}`                         | Path Variable | JSON         | 200  |
+| 유저 이름 수정      | PUT    | `/api/user/{id}`                         | JSON          | JSON         | 200  |
+| 유저 삭제          | DELETE | `/api/user/{id}`                         | Path Variable | -            | 200  |
 
 ---
 
 ##  요청/응답
-### 일정생성
-####  createRequest
-```json
-{
-  "name": "user",
-  "password": "1234",
-  "title": "회의 일정",
-  "content": "2025년 5월 회의 일정입니다."
-}
-```
 
-####  createResponse
-```json
-{
-  "id": 1,
-  "name": "user",
-  "createAt": "2025-05-09T15:30:00",
-  "updateAt": "2025-05-09T15:30:00",
-  "title": "회의 일정",
-  "content": "2025년 5월 회의 일정입니다."
-}
-```
+### 1. 일정 API
+#### 1.1 일정생성
+- 생성
+  - Request : PlanRequestDto
+  - Response : PlanResponseDto
+#### 1.2 일정조회
+- 단건조회
+  - Request : Path Variable Long
+  - Response : PlanResponseDto
+- 복수조회(전체, 수정일, 작성자아이디)
+  - Request : PageRequestDto
+  - Response : PageResponseDto 
+#### 1.3 일정수정
+- 수정
+  - Request : PlanUpdateRequestDto
+  - Response : PlanResponseDto
+#### 1.4 일정삭제
+- 삭제
+    - Request : PathVariable Long id, RequestParam String password
+    - Response : -
+### 2. 유저 API
+#### 2.1 유저생성
+- 생성
+    - Request : UserCreateRequestDto
+    - Response : UserResponseDto
+#### 2.2 유저조회
+- 조회
+    - Request : UserResponseDto
+    - Response : UserResponseDto
+#### 2.3 유저수정
+- 수정
+    - Request : UserUpdateRequestDto
+    - Response : UserResponseDto
+#### 2.4 유저삭제
+- 삭제
+    - Request : PathVariable Long id
+    - Response : -
