@@ -10,7 +10,6 @@ import com.example.todoplanner.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Repository
 public class PlanServiceImpl implements PlanService {
@@ -43,13 +42,13 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public PageResponseDto findPlanListUserByName(String name, PageRequestDto dto) {
-        return planRepository.findPlanListUserByName(name, dto);
+    public PageResponseDto findPlanListByUserId(Long userId, PageRequestDto dto) {
+        return planRepository.findPlanListByUserId(userId, dto);
     }
 
     @Override
-    public PageResponseDto findPlanListUserByUpdateAt(LocalDate updateAt, PageRequestDto dto) {
-        return planRepository.findPlanListUserByUpdateAt(updateAt, dto);
+    public PageResponseDto findPlanListByUpdateAt(LocalDate updateAt, PageRequestDto dto) {
+        return planRepository.findPlanListByUpdateAt(updateAt, dto);
     }
 
     @Override

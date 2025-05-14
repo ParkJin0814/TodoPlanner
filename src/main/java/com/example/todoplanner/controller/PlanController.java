@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/planner")
@@ -46,16 +45,16 @@ public class PlanController {
     // 작성자, 수정일 조회
     @GetMapping("/search")
     public ResponseEntity<PageResponseDto> searchPlans(
-            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long userId,
             @RequestParam(required = false) LocalDate updateAt,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         PageRequestDto dto = new PageRequestDto(page, size);
-        if (name != null) {
-            return ResponseEntity.ok(planService.findPlanListUserByName(name, dto));
+        if (userId != null) {
+            return ResponseEntity.ok(planService.findPlanListByUserId(userId, dto));
         } else if (updateAt != null) {
-            return ResponseEntity.ok(planService.findPlanListUserByUpdateAt(updateAt, dto));
+            return ResponseEntity.ok(planService.findPlanListByUpdateAt(updateAt, dto));
         }
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please search for the name or updateAt");
