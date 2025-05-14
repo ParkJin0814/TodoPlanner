@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class UserRequestDto {
+public class UserCreateRequestDto {
     @NotBlank(message = "이름은 필수 입력값입니다")
     @Size(max = 20, message = "이름은 20자 이내로 입력해주세요")
     private String name;

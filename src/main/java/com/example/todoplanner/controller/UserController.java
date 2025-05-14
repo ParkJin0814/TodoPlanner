@@ -21,7 +21,7 @@ public class UserController {
 
     // 유저생성
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto dto) {
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserCreateRequestDto dto) {
         return new ResponseEntity<>(userService.saveUser(dto), HttpStatus.CREATED);
     }
 
@@ -39,6 +39,14 @@ public class UserController {
 
 
     // 유저수정
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDto> updateUserName(
+            @PathVariable Long id,
+            @RequestBody UserUpdateRequestDto dto
+    ) {
+        return new ResponseEntity<>(userService.updateUserName(id, dto.getName()), HttpStatus.OK);
+    }
+
 
     // 유저삭제
 

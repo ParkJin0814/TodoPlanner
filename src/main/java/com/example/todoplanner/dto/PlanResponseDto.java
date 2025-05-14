@@ -22,7 +22,7 @@ public class PlanResponseDto {
         this.title = plan.getTitle();
         this.content = plan.getContent();
         this.createAt = plan.getCreateAt();
-        this.updateAt = plan.getCreateAt();
+        this.updateAt = plan.getUpdateAt();
 
         this.userResponseDto = dto;
     }

@@ -1,8 +1,9 @@
 package com.example.todoplanner.service;
 
-import com.example.todoplanner.dto.UserRequestDto;
+import com.example.todoplanner.dto.UserCreateRequestDto;
 import com.example.todoplanner.dto.UserResponseDto;
 import com.example.todoplanner.entity.User;
+import com.example.todoplanner.exception.PlanContentNotFoundException;
 import com.example.todoplanner.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto saveUser(UserRequestDto dto) {
+    public UserResponseDto saveUser(UserCreateRequestDto dto) {
         User user = new User(dto.getName(), dto.getEmail());
 
         return userRepository.saveUser(user);
@@ -30,6 +31,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findUserById(Long id) {
+        return new UserResponseDto(userRepository.findUserByIdOrElseThrow(id));
+    }
+
+    @Override
+    public UserResponseDto updateUserName(Long id, String name) {
+        if (name == null){
+            throw new PlanContentNotFoundException();
+        }
+
+        userRepository.updateUserName(id, name);
+
         return new UserResponseDto(userRepository.findUserByIdOrElseThrow(id));
     }
 }
