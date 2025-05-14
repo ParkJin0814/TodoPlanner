@@ -48,7 +48,10 @@ public class PlanController {
             @RequestParam(defaultValue = "10") int size
     ) {
         PageRequestDto dto = new PageRequestDto(page, size);
-        if (userId != null) {
+        if (userId != null && updateAt != null) {
+            return ResponseEntity.ok(planService.findPlanListByUserIdAndUpdateAt(userId, updateAt, dto));
+        }
+        else if (userId != null) {
             return ResponseEntity.ok(planService.findPlanListByUserId(userId, dto));
         } else if (updateAt != null) {
             return ResponseEntity.ok(planService.findPlanListByUpdateAt(updateAt, dto));

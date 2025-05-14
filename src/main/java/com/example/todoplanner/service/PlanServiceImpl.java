@@ -52,6 +52,11 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    public PageResponseDto findPlanListByUserIdAndUpdateAt(Long userId, LocalDate updateAt, PageRequestDto dto) {
+        return planRepository.findPlanListByUserIdAndUpdateAt(userId, updateAt, dto);
+    }
+
+    @Override
     public PlanResponseDto updatePlanContent(Long id, String password, String content) {
         Plan plan = planRepository.findPlanByIdOrElseThrow(id);
         User user = userRepository.findUserByIdOrElseThrow(plan.getUserId());
