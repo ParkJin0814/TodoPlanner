@@ -45,14 +45,35 @@ public class JdbcTemplateUserRepository implements UserRepository{
     // user id로 Plan 데이터 찾기 없을경우 오류 반환
     @Override
     public User findUserByIdOrElseThrow(Long id) {
-        List<User> result = jdbcTemplate.query("select * from users where id = ?", userRowMapper(), id);
+        List<User> result = jdbcTemplate.query("select * from users where id = ?", userRowMapperV2(), id);
         return result.stream()
                 .findAny()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist userId = " + id));
     }
 
+    @Override
+    public List<UserResponseDto> findAllUser() {
+        return jdbcTemplate.query("select * from users", userRowMapper());
+    }
+
     // 쿼리 반환타입매서드
-    private RowMapper<User> userRowMapper() {
+    private RowMapper<UserResponseDto> userRowMapper() {
+        return new RowMapper<UserResponseDto>() {
+            @Override
+            public UserResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new UserResponseDto(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getTimestamp("createAt").toLocalDateTime(),
+                        rs.getTimestamp("updateAt").toLocalDateTime()
+                );
+            }
+        };
+    }
+
+    // 쿼리 반환타입매서드
+    private RowMapper<User> userRowMapperV2() {
         return new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs, int rowNum) throws SQLException {
