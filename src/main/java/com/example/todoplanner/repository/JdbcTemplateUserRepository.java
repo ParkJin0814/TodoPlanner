@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,11 @@ public class JdbcTemplateUserRepository implements UserRepository{
     @Override
     public List<UserResponseDto> findAllUser() {
         return jdbcTemplate.query("select * from users", userRowMapper());
+    }
+
+    @Override
+    public void updateUserName(Long id, String name) {
+        jdbcTemplate.update("update users set name = ?, updateAt = ? where id = ?", name, LocalDateTime.now(), id);
     }
 
     // 쿼리 반환타입매서드

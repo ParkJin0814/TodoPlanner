@@ -11,4 +11,6 @@ public interface UserRepository {
     User findUserByIdOrElseThrow(Long id);
 
     List<UserResponseDto> findAllUser();
+
+    void updateUserName(Long id, String name);
 }

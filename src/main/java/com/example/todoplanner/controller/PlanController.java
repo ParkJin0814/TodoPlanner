@@ -1,9 +1,6 @@
 package com.example.todoplanner.controller;
 
-import com.example.todoplanner.dto.PageRequestDto;
-import com.example.todoplanner.dto.PageResponseDto;
-import com.example.todoplanner.dto.PlanRequestDto;
-import com.example.todoplanner.dto.PlanResponseDto;
+import com.example.todoplanner.dto.*;
 import com.example.todoplanner.service.PlanService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -66,8 +63,8 @@ public class PlanController {
     @PutMapping("/{id}")
     public ResponseEntity<PlanResponseDto> updateContentPlanById(
             @PathVariable Long id,
-            @Valid @RequestBody PlanRequestDto dto
-    ) {
+            @Valid @RequestBody PlanUpdateRequestDto dto
+            ) {
         return new ResponseEntity<>(planService.updatePlanContent(id, dto.getPassword(), dto.getContent()), HttpStatus.OK);
     }
 
