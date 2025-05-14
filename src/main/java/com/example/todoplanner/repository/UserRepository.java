@@ -13,4 +13,6 @@ public interface UserRepository {
     List<UserResponseDto> findAllUser();
 
     void updateUserName(Long id, String name);
+
+    void deleteUser(Long id);
 }

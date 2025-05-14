@@ -62,6 +62,14 @@ public class JdbcTemplateUserRepository implements UserRepository{
         jdbcTemplate.update("update users set name = ?, updateAt = ? where id = ?", name, LocalDateTime.now(), id);
     }
 
+    @Override
+    public void deleteUser(Long id) {
+        // 유저관련 데이터 먼저 삭제
+        jdbcTemplate.update("delete from plan where userId = ?", id);
+        // 유저삭제
+        jdbcTemplate.update("delete from users where id = ?", id);
+    }
+
     // 쿼리 반환타입매서드
     private RowMapper<UserResponseDto> userRowMapper() {
         return new RowMapper<UserResponseDto>() {
