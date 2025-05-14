@@ -1,6 +1,16 @@
 # TodoPlanner
 
 ---
+## 사용한 기술
+
+- 언어: Java
+- 프레임워크: Spring Boot
+- 데이터베이스: MySQL
+- 버전 관리: GitHub
+- IDE: IntelliJ IDEA
+
+---
+
 ## CRUD
 <img src="https://github.com/user-attachments/assets/e0efbcf8-4eec-43be-a44f-31895365824f" width="400"/>
 
@@ -66,3 +76,53 @@
 - 삭제
     - Request : PathVariable Long id
     - Response : -
+
+
+## 파일 디렉토리 구조
+```
+src
+    ├───main
+    │   ├───java
+    │   │   └───com
+    │   │       └───example
+    │   │           └───todoplanner
+    │   │               │   TodoPlannerApplication.java
+    │   │               │
+    │   │               ├───controller
+    │   │               │       PlanController.java
+    │   │               │       UserController.java
+    │   │               │
+    │   │               ├───dto
+    │   │               │       ErrorResponseDto.java
+    │   │               │       PageRequestDto.java
+    │   │               │       PageResponseDto.java
+    │   │               │       PlanRequestDto.java
+    │   │               │       PlanResponseDto.java
+    │   │               │       PlanUpdateRequestDto.java
+    │   │               │       UserCreateRequestDto.java
+    │   │               │       UserResponseDto.java
+    │   │               │       UserUpdateRequestDto.java
+    │   │               │
+    │   │               ├───entity
+    │   │               │       Plan.java
+    │   │               │       User.java
+    │   │               │
+    │   │               ├───exception
+    │   │               │       GlobalExceptionHandler.java
+    │   │               │       PasswordMismatchException.java
+    │   │               │       PlanContentNotFoundException.java
+    │   │               │       PlannerException.java
+    │   │               │       PlanNotFoundException.java
+    │   │               │
+    │   │               ├───repository
+    │   │               │       JdbcTemplatePlanRepository.java
+    │   │               │       JdbcTemplateUserRepository.java
+    │   │               │       PlanRepository.java
+    │   │               │       UserRepository.java
+    │   │               │
+    │   │               └───service
+    │   │                       PlanService.java
+    │   │                       PlanServiceImpl.java
+    │   │                       UserService.java
+    │   │                       UserServiceImpl.java
+```
